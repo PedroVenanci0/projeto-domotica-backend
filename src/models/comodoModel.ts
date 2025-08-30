@@ -20,7 +20,7 @@ export const ComodoModel = {
     },
 
     listar: async () => {
-        const sql = 'SELECT * FROM COMODO'
+        const sql = 'SELECT * FROM COMODO WHERE ATIVO = TRUE'
 
         try {
             console.log('Model vai executar a query no banco...');
