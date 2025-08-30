@@ -1,3 +1,4 @@
+import { Query } from "pg";
 import { pool } from "../config/database.js";
 
 export const ComodoModel = {
@@ -28,6 +29,19 @@ export const ComodoModel = {
             return resultado.rows;
         } catch (error) {
             console.error('Erro: erro ao executar a query no model:', error);
+            throw error;
+        }
+    },
+
+    atualizar:  async (id: number, novoNome: string) => {
+        const sql = 'UPDATE COMODO SET NOME_COMODO = $2 WHERE ID_COMODO = $1 RETURNING *;';
+        const values = [id, novoNome];
+
+        try {
+            const resultado = await pool.query(sql, values)
+            return resultado.rows[0]
+        }  catch (error){
+            console.error('Erro ao atualizar o comodo:', error);
             throw error;
         }
     }

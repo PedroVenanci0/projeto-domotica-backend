@@ -1,12 +1,6 @@
 import type { Request, Response } from 'express';
 import { ComodoModel } from '../models/comodoModel.js';
 
-const comadosfalsos = [
-    { id: 1, nome: "Sala de Estar", dispositivos: [] },
-    { id: 2, nome: "Cozinha", dispositivos: [] },
-    { id: 3, nome: "Quarto Casal", dispositivos: [] }
-]
-
 export const listarComodos = async (req: Request, res: Response) => {
     try {
         const todosOsComodos = await ComodoModel.listar();
@@ -40,3 +34,28 @@ export const criarComodo = async (req: Request, res: Response) => {
   }
 };
 
+export const atualizarComodo = async (req: Request, res: Response) => {
+    console.log('Controller atualizar Cômodo foi chamado')
+    const {id} = req.params
+    const {nome} = req.body
+
+    if (!nome){
+        console.log('ERRO: O nome não foi fornecido.');
+        return res.status(400).json({ mensagem: 'O campo "nome" é obrigatório.' });
+    } else if (!id){
+        console.log('ERRO: O id não foi fornecido.');
+        return res.status(400).json({ mensagem: 'O campo "id" é obrigatório.' });
+    }
+
+    try {
+        const comodoAtualizado = await ComodoModel.atualizar(Number(id), nome)
+
+        if (comodoAtualizado){
+            res.status(200).json(comodoAtualizado)
+        }else{
+            res.status(404).json({mensagem: 'Cômodo não encontrado'})
+        }
+    }catch (error){
+        res.status(500).json({ mensagem: 'Erro interno do servidor.' })
+    }
+}
