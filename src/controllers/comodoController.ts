@@ -7,10 +7,17 @@ const comadosfalsos = [
     { id: 3, nome: "Quarto Casal", dispositivos: [] }
 ]
 
-export const listarComodos = (req: Request, res: Response) => {
-    console.log('>>> A função listarComodos FOI CHAMADA! <<<');
-    res.status(200).json(comadosfalsos)
-}
+export const listarComodos = async (req: Request, res: Response) => {
+    try {
+        const todosOsComodos = await ComodoModel.listar();
+        
+        res.status(200).json(todosOsComodos);
+
+    } catch (error) {
+        console.error('Erro no controller ao listar cômodos:', error);
+        res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+    }
+};
 
 export const criarComodo = async (req: Request, res: Response) => {
   console.log('1. Controller criarComodo foi chamado.');
@@ -32,3 +39,4 @@ export const criarComodo = async (req: Request, res: Response) => {
     res.status(500).json({ mensagem: 'Erro interno do servidor.' });
   }
 };
+
