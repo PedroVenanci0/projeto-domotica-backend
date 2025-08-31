@@ -16,5 +16,16 @@ export const dispositivoModel = {
             console.error('Erro ao executar a Query no model: ', error)
             throw error
         }
+    },
+
+    listarTodos: async () => {
+        const sql = 'SELECT * FROM DISPOSITIVO;';
+        try{
+            const resultado = await pool.query(sql);
+            return resultado.rows;
+        } catch (error){
+            console.error('Erro ao executar a Query no model:', error)
+            throw error
+        }
     }
 }

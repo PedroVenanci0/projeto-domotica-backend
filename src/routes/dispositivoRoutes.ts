@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { criarDispositivo } from '../controllers/dispositivoController.js'
+import { criarDispositivo, listarDispositivos } from '../controllers/dispositivoController.js'
 
 const router = Router();
 
+router.get('/', listarDispositivos);
 router.post('/', criarDispositivo );
 
 export default router;

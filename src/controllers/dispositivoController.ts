@@ -23,3 +23,13 @@ export const criarDispositivo = async (req: Request, res: Response) => {
         res.status(500).json({mensagem: 'Erro interno no Servidor'})
     }
 }
+
+export const listarDispositivos = async (req: Request, res: Response) => {
+    try {
+        const todosOsDispositivos = await dispositivoModel.listarTodos();
+        res.status(200).json(todosOsDispositivos);
+    } catch (error){
+        console.error('Error no controller ao listar Cômodos')
+        res.status(500).json({mensagem: 'Erro interno do servidor'})
+    }
+}
