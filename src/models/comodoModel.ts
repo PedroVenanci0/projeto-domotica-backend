@@ -41,7 +41,20 @@ export const ComodoModel = {
             const resultado = await pool.query(sql, values)
             return resultado.rows[0]
         }  catch (error){
-            console.error('Erro ao atualizar o comodo:', error);
+            console.error('EErro: erro ao executar a query no model:', error);
+            throw error;
+        }
+    },
+
+    deletar: async (id: number) => {
+        const sql = 'UPDATE COMODO SET ATIVO = FALSE WHERE ID_COMODO = $1 RETURNING *'
+        const values = [id]
+
+        try {
+            const resultado = await pool.query(sql, values)
+            return resultado.rows[0]
+        } catch (error){
+            console.error('Erro: erro ao executar a query no model: ', error)
             throw error;
         }
     }

@@ -59,3 +59,23 @@ export const atualizarComodo = async (req: Request, res: Response) => {
         res.status(500).json({ mensagem: 'Erro interno do servidor.' })
     }
 }
+
+export const deletarComodo = async (req: Request, res: Response) => {
+    console.log('controller de deletar foi chamado')
+    const {id} = req.params
+    if (!id){
+        console.log('Error: Id nao foi fornecido')
+        res.status(400).json({mensagem: 'O campo "id" é obrigatório.'})
+    }
+    try {
+        const comodoDeletado = await ComodoModel.deletar(Number(id))
+        
+        if (comodoDeletado){
+            res.status(204).json(comodoDeletado)
+        } else{
+            res.status(404).json({mensagem: 'Cômodo não encontrado'})
+        }
+    }catch (error){
+        res.status(500).json({mensagem: 'Erro interno no servidor'})
+    }
+}
