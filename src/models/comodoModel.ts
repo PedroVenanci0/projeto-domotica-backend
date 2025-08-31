@@ -19,8 +19,28 @@ export const ComodoModel = {
         }
     },
 
-    listar: async () => {
-        const sql = 'SELECT * FROM COMODO WHERE ATIVO = TRUE'
+    listarTodos: async () => {
+        const sql = `
+            SELECT
+                C.ID_COMODO,
+                C.NOME_COMODO,
+                COALESCE(
+                    (
+                        SELECT JSON_AGG(
+                            JSON_BUILD_OBJECT(
+                                'id_dispositivo', D.ID_DISPOSITIVO,
+                                'nome_dispositivo', D.NOME_DISPOSITIVO,
+                                'estado_dispositivo', D.ESTADO_DISPOSITIVO
+                            )
+                        )
+                        FROM DISPOSITIVO D
+                        WHERE D.ID_COMODO = C.ID_COMODO
+                    ),
+                    '[]'::json
+                ) as dispositivos
+            FROM
+                COMODO C;
+        `;
 
         try {
             console.log('Model vai executar a query no banco...');

@@ -3,7 +3,7 @@ import { ComodoModel } from '../models/comodoModel.js';
 
 export const listarComodos = async (req: Request, res: Response) => {
     try {
-        const todosOsComodos = await ComodoModel.listar();
+        const todosOsComodos = await ComodoModel.listarTodos();
         
         res.status(200).json(todosOsComodos);
 
