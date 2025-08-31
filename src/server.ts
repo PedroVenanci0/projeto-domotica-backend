@@ -10,6 +10,7 @@ console.log('-----------------------------------------');
     
 import express from 'express';
 import comodoRoutes from './routes/comodoRoutes.js';
+import dispositivoRoutes from './routes/dispositivoRoutes.js'
 
 // Cria a aplicação Express
 const app = express();
@@ -17,6 +18,7 @@ const PORT = 3000;
 
 app.use(express.json());
 app.use('/api/comodos', comodoRoutes)
+app.use('/api/dispositivos', dispositivoRoutes)
 
 // Rota de teste para a raiz do servidor
 app.get('/', (req, res) => {
