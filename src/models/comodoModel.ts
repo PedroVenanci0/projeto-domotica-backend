@@ -19,6 +19,41 @@ export const ComodoModel = {
         }
     },
 
+    listarSomenteUm: async (id: number) => {
+        const sql = `
+            SELECT
+                C.ID_COMODO,
+                C.NOME_COMODO,
+                COALESCE(
+                    (
+                        SELECT JSON_AGG(
+                            JSON_BUILD_OBJECT(
+                                'id_dispositivo', D.ID_DISPOSITIVO,
+                                'nome_dispositivo', D.NOME_DISPOSITIVO,
+                                'estado_dispositivo', D.ESTADO_DISPOSITIVO
+                            )
+                        )
+                        FROM DISPOSITIVO D
+                        WHERE D.ID_COMODO = C.ID_COMODO AND D.ATIVO = true -- Apenas dispositivos ativos
+                    ),
+                    '[]'::json
+                ) as dispositivos
+            FROM
+                COMODO C
+            WHERE C.ID_COMODO = $1 AND C.ATIVO = true; -- Apenas o cômodo com este ID e que esteja ativo
+        `;
+        const values = [id];
+
+        try {
+            const resultado = await pool.query(sql, values);
+            // Retorna o primeiro (e único) resultado encontrado
+            return resultado.rows[0];
+        } catch (error) {
+            console.error('Erro ao buscar cômodo por ID:', error);
+            throw error;
+        }
+    },
+
     listarTodos: async () => {
         const sql = `
             SELECT
@@ -39,7 +74,7 @@ export const ComodoModel = {
                     '[]'::json
                 ) as dispositivos
             FROM
-                COMODO C;
+                COMODO C WHERE ATIVO = TRUE;
         `;
 
         try {
