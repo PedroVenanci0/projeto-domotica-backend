@@ -1,6 +1,22 @@
 import type { Request, Response } from 'express';
 import { ComodoModel } from '../models/comodoModel.js';
 
+export const listarSomenteUmComodo = async (req: Request, res: Response) => {
+    const { id } = req.params
+
+    if (!id){
+        console.log('Error id nao encontrado')
+        res.status(400).json({mensagem: 'Error campo ID é obrigatorio'})
+    }
+    try{
+        const unicoComodo = await ComodoModel.listarSomenteUm(Number(id));
+        res.status(200).json(unicoComodo);
+    } catch (error) {
+        console.error('Erro no controller ao listar cômodos:', error);
+        res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+    }
+}
+
 export const listarComodos = async (req: Request, res: Response) => {
     try {
         const todosOsComodos = await ComodoModel.listarTodos();
