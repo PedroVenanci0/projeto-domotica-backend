@@ -27,5 +27,31 @@ export const dispositivoModel = {
             console.error('Erro ao executar a Query no model:', error)
             throw error
         }
+    },
+
+    atualizar: async (id: number, campos: { nome?: string; estado?: boolean }) => {
+
+        const chaves = Object.keys(campos);
+        
+        if (chaves.length === 0) {
+            return null; 
+        }
+
+        const setClause = chaves.map((chave, index) => {
+            const nomeColuna = chave === 'nome' ? 'NOME_DISPOSITIVO' : 'ESTADO_DISPOSITIVO';
+            return `${nomeColuna} = $${index + 1}`;
+        }).join(', '); 
+
+        const values = [...Object.values(campos), id];
+
+        const sql = `UPDATE DISPOSITIVO SET ${setClause} WHERE ID_DISPOSITIVO = $${values.length} RETURNING *;`;
+
+        try {
+            const resultado = await pool.query(sql, values);
+            return resultado.rows[0];
+        } catch (error) {
+            console.error('Erro ao atualizar dispositivo:', error);
+            throw error;
+        }
     }
 }
