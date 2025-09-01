@@ -19,7 +19,7 @@ export const dispositivoModel = {
     },
 
     listarTodos: async () => {
-        const sql = 'SELECT * FROM DISPOSITIVO;';
+        const sql = 'SELECT * FROM DISPOSITIVO WHERE ATIVO = TRUE;';
         try{
             const resultado = await pool.query(sql);
             return resultado.rows;
@@ -52,6 +52,19 @@ export const dispositivoModel = {
         } catch (error) {
             console.error('Erro ao atualizar dispositivo:', error);
             throw error;
+        }
+    },
+
+    deletar: async (id: number) => {
+        const sql = 'UPDATE DISPOSITIVO SET ATIVO = FALSE WHERE ID_DISPOSITIVO = $1 RETURNING *;'
+        const values = [id]
+
+        try{
+            const resultado = await pool.query(sql, values)
+            return resultado.rows[0]
+        } catch (error){
+            console.error('Erro ao executar a Query bo model')
+            throw error
         }
     }
 }

@@ -64,3 +64,23 @@ export const atualizarDispositivo = async (req: Request, res: Response) => {
         res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 };
+
+export const deletarDispositivo = async (req: Request, res: Response) => {
+    const { id } = req.params
+
+    if (!id){
+        console.log('Id nao fornceido')
+        res.status(400).json({mensagem: 'O campo id é obrigatorio'})
+    }
+    try {
+        const dispositivoDeletado = await dispositivoModel.deletar(Number(id))
+        if (dispositivoDeletado){
+            res.status(201).json(dispositivoDeletado)
+            console.log('Dispositivo deletado')
+        } else{
+            res.status(404).json({ mensagem: 'Dispositivo nao encontrado' })
+        }
+    } catch (error){
+        res.status(500).json({mensagem: 'Erro interno no servidor'})
+    }
+}
