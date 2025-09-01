@@ -29,6 +29,19 @@ export const dispositivoModel = {
         }
     },
 
+    listarSomenteUm: async (id: number) => {
+        const sql = 'SELECT * FROM DISPOSITIVO WHERE ATIVO = TRUE AND ID_DISPOSITIVO = $1'
+        const values = [id]
+
+        try{
+            const resultado = await pool.query(sql,values)
+            return resultado.rows[0]
+        } catch (error){
+            console.error('Erro ao executar a Query no model')
+            throw error
+        }
+    },
+
     atualizar: async (id: number, campos: { nome?: string; estado?: boolean }) => {
 
         const chaves = Object.keys(campos);
