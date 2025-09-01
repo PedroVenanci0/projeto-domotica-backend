@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { atualizarDispositivo, criarDispositivo, deletarDispositivo, listarDispositivos } from '../controllers/dispositivoController.js'
+import { atualizarDispositivo, criarDispositivo, deletarDispositivo, listarDispositivos, listarSomenteUmDispositivo } from '../controllers/dispositivoController.js'
 
 const router = Router();
 
 router.get('/', listarDispositivos);
+router.get('/:id', listarSomenteUmDispositivo);
 router.post('/', criarDispositivo );
 router.patch('/:id', atualizarDispositivo);
 router.delete('/:id', deletarDispositivo);

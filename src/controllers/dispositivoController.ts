@@ -24,12 +24,29 @@ export const criarDispositivo = async (req: Request, res: Response) => {
     }
 }
 
+export const listarSomenteUmDispositivo = async (req: Request, res: Response) => {
+    const { id } = req.params
+    try{
+        const unicoDispositivo = await dispositivoModel.listarSomenteUm(Number(id))
+
+        if (unicoDispositivo) {
+            res.status(200).json(unicoDispositivo);
+        } else {
+            res.status(404).json({ mensagem: 'Dispositivo não encontrado.' });
+        }
+
+    } catch (error){
+        console.error('Erro no controller ao lista dispositivo')
+        res.status(500).json({mensagem: 'Erro interno do servidor'})
+    }
+}
+
 export const listarDispositivos = async (req: Request, res: Response) => {
     try {
         const todosOsDispositivos = await dispositivoModel.listarTodos();
         res.status(200).json(todosOsDispositivos);
     } catch (error){
-        console.error('Error no controller ao listar Cômodos')
+        console.error('Error no controller ao listar Dispositivo')
         res.status(500).json({mensagem: 'Erro interno do servidor'})
     }
 }
@@ -75,7 +92,7 @@ export const deletarDispositivo = async (req: Request, res: Response) => {
     try {
         const dispositivoDeletado = await dispositivoModel.deletar(Number(id))
         if (dispositivoDeletado){
-            res.status(201).json(dispositivoDeletado)
+            res.status(204).json(dispositivoDeletado)
             console.log('Dispositivo deletado')
         } else{
             res.status(404).json({ mensagem: 'Dispositivo nao encontrado' })
