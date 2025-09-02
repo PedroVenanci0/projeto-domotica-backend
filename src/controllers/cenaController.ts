@@ -96,28 +96,21 @@ export const executarCena = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
-        // 1. Busca a cena e suas ações no banco de dados
         const cenaParaExecutar = await CenaModel.listarSomenteUm(Number(id));
 
-        // 2. Validações
         if (!cenaParaExecutar) {
             return res.status(404).json({ mensagem: 'Cena não encontrada.' });
         }
         if (!cenaParaExecutar.ativo) {
-            return res.status(409).json({ mensagem: 'Esta cena está desativada.' }); // 409 Conflict
+            return res.status(409).json({ mensagem: 'Esta cena está desativada.' }); 
         }
 
-        // 3. Envia uma resposta imediata para o frontend
         res.status(202).json({ mensagem: 'Execução da cena iniciada.' });
 
-        // 4. Inicia a execução das ações em segundo plano
-        // Usamos uma função anônima auto-executável para não travar a resposta
         (async () => {
             for (const acao of cenaParaExecutar.acoes) {
-                // 5. Espera o intervalo de tempo definido na ação
                 await esperar(acao.intervalo_segundos);
 
-                // 6. Executa a atualização no dispositivo
                 console.log(`Executando ação: Dispositivo ${acao.dispositivo.id_dispositivo} -> estado ${acao.dispositivo.estado_desejado}`);
                 await dispositivoModel.atualizar(
                     acao.dispositivo.id_dispositivo, 

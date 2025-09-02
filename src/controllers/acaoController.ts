@@ -31,9 +31,6 @@ export const criarAcao = async (req: Request, res: Response) => {
     }
 };
 
-/**
- * Busca uma ação específica pelo seu ID.
- */
 export const buscarAcaoPorId = async (req: Request, res: Response) => {
     const { id_acao } = req.params;
     try {
@@ -49,9 +46,6 @@ export const buscarAcaoPorId = async (req: Request, res: Response) => {
     }
 };
 
-/**
- * Atualiza uma ação existente.
- */
 export const atualizarAcao = async (req: Request, res: Response) => {
     const { id_acao } = req.params;
     const camposParaAtualizar: {
@@ -78,9 +72,6 @@ export const atualizarAcao = async (req: Request, res: Response) => {
     }
 };
 
-/**
- * Deleta uma ação.
- */
 export const deletarAcao = async (req: Request, res: Response) => {
     const { id_acao } = req.params;
     try {
