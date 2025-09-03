@@ -3,9 +3,9 @@ import {dispositivoModel} from '../models/dispositivoModel.js'
 
 export const criarDispositivo = async (req: Request, res: Response) => {
     console.log('Controller Criar dispositivo foi chamado')
-    const { nome } = req.body
+    const { nome_dispositivo } = req.body
     const { id_comodo } = req.body
-
+    const nome = nome_dispositivo
     if (!nome){
         console.log('Error: Nome nao foi reconhecido')
         return res.status(400).json({mensagem: 'O campo nome é obrigatorio'})

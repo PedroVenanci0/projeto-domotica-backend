@@ -5,8 +5,8 @@ import { dispositivoModel } from "../models/dispositivoModel.js";
 const esperar = (segundos: number) => new Promise(resolve => setTimeout(resolve, segundos * 1000));
 
 export const criarCena = async (req: Request, res: Response) => {
-    const {nome} = req.body
-
+    const {nome_cena} = req.body
+    const nome = nome_cena
     if (!nome){
         console.log('Error id nao encontrado')
         res.status(400).json({mensagem: 'Error campo nome é obrigatorio'})
@@ -22,7 +22,9 @@ export const criarCena = async (req: Request, res: Response) => {
 
 export const listarCenas = async (req: Request, res: Response) => {
     try {
-        const todasAsCenas = await CenaModel.listarTodos;
+        const todasAsCenas = await CenaModel.listarTodos();
+        console.log(todasAsCenas)
+        console.log('fghj')
         
         res.status(200).json(todasAsCenas);
 

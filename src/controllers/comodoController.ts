@@ -31,7 +31,8 @@ export const listarComodos = async (req: Request, res: Response) => {
 
 export const criarComodo = async (req: Request, res: Response) => {
   console.log('1. Controller criarComodo foi chamado.');
-  const { nome } = req.body;
+  const { nome_comodo } = req.body;
+  const nome = nome_comodo
 
   if (!nome) {
     console.log('ERRO: O nome não foi fornecido.');
